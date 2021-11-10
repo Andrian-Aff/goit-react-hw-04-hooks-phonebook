@@ -1,0 +1,32 @@
+.container {
+  max-width: 1170px;
+  margin: auto;
+  padding: 0;
+  height: 1000px;
+}
+
+.title {
+  text-align: right;
+  font-family: 'Exchange', Georgia, serif;
+  font-size: 42px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.titleContacts {
+  text-align: right;
+  font-family: 'Exchange', Georgia, serif;
+  font-size: 2rem;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 400px;
+  }
+}
+.phonebook {
+  width: 50%;
+  padding-top: 30px;
+}
