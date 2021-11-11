@@ -1,81 +1,80 @@
   import s from './ContactForm.module.css';
   import PropTypes from 'prop-types';
-  import React, {Component} from 'react';
+  import {useState} from 'react';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  }
- 
-  checkedName = ()=> {
-    const {name} = this.state
-    if (this.props.contacts.find(contact => 
+export default function ContactForm({contacts, onSubmit}) {
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
+
+  const checkedName = ()=> {
+    if (contacts.find(contact => 
       contact.name.toLowerCase() === name.toLowerCase()))
       {alert(`${name} is already in contacts.`)
-      this.reset()
+      reset()
       }
-      
   }
 
-
-  handleChangeName = e =>{
+  const handleChangeName = e =>{
     const {name, value} = e.target
-    this.setState({ [name]: value})
-      // console.log(e.target.value)
-      // console.log(e.target.name)
+    switch (name) {
+      case 'name':
+          setName(value);
+          break;
+
+      case 'number':
+          setNumber(value);
+          break;
+
+      default:
+          return;
+    }
   };
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset()
+    onSubmit(name, number);
+    reset()
   };
 
-  reset =()=> {
-    this.setState({
-      name: '',
-      number: '',
-    })
+  const reset =()=> {
+      setName('');
+      setNumber('');
   }
-
-  render() {
-    const {name, number} = this.state
-    return (
-  <form className={s.form} onSubmit={this.handleSubmit}>
-    <label className={s.labelForm}>Name
-      <input className={s.inputForm}
-        type="text"
-        name="name"
-        placeholder="Sara Winters"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-        required
-        value={name}
-        onChange={this.handleChangeName}
-        onBlur={this.checkedName }
-      />
-    </label>
-    <label className={s.labelForm}>Number
-      <input className={s.inputForm}
-          type="tel"
-          name="number"
-          placeholder="123-45-67"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+  
+  return (
+    <form className={s.form} onSubmit={handleSubmit}>
+      <label className={s.labelForm}>Name
+        <input className={s.inputForm}
+          type="text"
+          name="name"
+          placeholder="Sara Winters"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
           required
-          value={number}
-          onChange={this.handleChangeName}
+          value={name}
+          onChange={handleChangeName}
+          onBlur={checkedName}
         />
       </label>
-  
-    <button className={s.btnForm} type="submit" disabled={!name}>Add contact</button>
-  </form>
-   );} 
+      <label className={s.labelForm}>Number
+        <input className={s.inputForm}
+            type="tel"
+            name="number"
+            placeholder="123-45-67"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+            required
+            value={number}
+            onChange={handleChangeName}
+          />
+        </label>
+    
+      <button className={s.btnForm} type="submit" disabled={!name}>Add contact</button>
+    </form>
+     );
 }
 
 ContactForm.propTypes = {
   name: PropTypes.string,
   number: PropTypes.number,
 }
-export default ContactForm;
